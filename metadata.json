@@ -1,0 +1,5 @@
+{
+  "name": "VEO HD Media Generator",
+  "description": "An advanced AI-powered application to generate high-definition, full HD videos and stunning photos from text prompts using Google's VEO and Imagen models. Supports various aspect ratios for creative flexibility.",
+  "requestFramePermissions": []
+}
