@@ -10,6 +10,7 @@ import { GenerationType, AspectRatio, FileInfo } from './types';
 import { VIDEO_GENERATION_MESSAGES } from './constants';
 
 const App: React.FC = () => {
+    const [apiKey, setApiKey] = useState<string>('');
     const [prompt, setPrompt] = useState<string>('');
     const [generationType, setGenerationType] = useState<GenerationType>(GenerationType.Image);
     const [aspectRatio, setAspectRatio] = useState<AspectRatio>('16:9');
@@ -18,18 +19,6 @@ const App: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [resultUrl, setResultUrl] = useState<string | null>(null);
     const [referenceImage, setReferenceImage] = useState<FileInfo | null>(null);
-    const [apiKey, setApiKey] = useState<string>('');
-    const [showApiKeyInput, setShowApiKeyInput] = useState<boolean>(false);
-
-    useEffect(() => {
-        const storedApiKey = localStorage.getItem('gemini_api_key');
-        if (storedApiKey) {
-            setApiKey(storedApiKey);
-            setShowApiKeyInput(false);
-        } else {
-            setShowApiKeyInput(true);
-        }
-    }, []);
 
     useEffect(() => {
         let interval: number;
@@ -46,19 +35,9 @@ const App: React.FC = () => {
     
     const isAspectRatioDisabled = generationType === GenerationType.Image && !!referenceImage;
 
-    const handleKeySubmit = (newKey: string) => {
-        if (newKey.trim()) {
-            setApiKey(newKey);
-            localStorage.setItem('gemini_api_key', newKey);
-            setShowApiKeyInput(false);
-            setError(null);
-        }
-    };
-
     const handleGenerate = useCallback(async () => {
-        if (!apiKey) {
-            setError('Please set your Gemini API Key first.');
-            setShowApiKeyInput(true);
+        if (!apiKey.trim()) {
+            setError('Please enter your Gemini API Key.');
             return;
         }
         if (!prompt.trim() && !referenceImage) {
@@ -94,7 +73,7 @@ const App: React.FC = () => {
             }
         } catch (err: any) {
             console.error(err);
-            setError(`An error occurred: ${err.message}. Please check your API key and prompt.`);
+            setError(`An error occurred: ${err.message}. Please check your prompt and API key.`);
         } finally {
             setIsLoading(false);
             setLoadingMessage('');
@@ -103,8 +82,7 @@ const App: React.FC = () => {
 
     return (
         <div className="bg-gray-900 text-white min-h-screen font-sans">
-            {showApiKeyInput && <ApiKeyInput onSubmit={handleKeySubmit} />}
-            <Header onShowKeyInput={() => setShowApiKeyInput(true)} isKeySet={!!apiKey} />
+            <Header />
             <main className="container mx-auto px-4 py-8 max-w-4xl">
                 <div className="bg-gray-800 rounded-2xl shadow-2xl p-6 md:p-8 space-y-8">
                     <p className="text-center text-lg text-gray-300">
@@ -127,6 +105,12 @@ const App: React.FC = () => {
                         setPrompt={setPrompt}
                         onGenerate={handleGenerate}
                         isLoading={isLoading}
+                    />
+
+                    <ApiKeyInput 
+                        apiKey={apiKey}
+                        setApiKey={setApiKey}
+                        isDisabled={isLoading}
                     />
 
                     {error && (

@@ -1,21 +1,13 @@
 import { GoogleGenAI, Modality } from "@google/genai";
 import { AspectRatio, FileInfo } from '../types';
 
-const getAiClient = (apiKey: string) => {
-    if (!apiKey) {
-        throw new Error("API_KEY is missing.");
-    }
-    return new GoogleGenAI({ apiKey });
-};
-
 export const generateImage = async (
     prompt: string, 
     aspectRatio: AspectRatio, 
     referenceImage: FileInfo | null,
     apiKey: string
 ): Promise<string> => {
-    const ai = getAiClient(apiKey);
-    
+    const ai = new GoogleGenAI({ apiKey });
     if (referenceImage) {
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash-image',
@@ -70,7 +62,7 @@ export const generateVideo = async (
     referenceImage: FileInfo | null,
     apiKey: string
 ) => {
-    const ai = getAiClient(apiKey);
+    const ai = new GoogleGenAI({ apiKey });
     const videoParams: any = {
         model: 'veo-3.0-generate-preview',
         prompt: `A full HD, cinematic, high quality video of: ${prompt}`,
@@ -92,7 +84,7 @@ export const generateVideo = async (
 };
 
 export const checkVideoStatus = async (operation: any, apiKey: string) => {
-    const ai = getAiClient(apiKey);
+    const ai = new GoogleGenAI({ apiKey });
     const updatedOperation = await ai.operations.getVideosOperation({ operation: operation });
     return updatedOperation;
 };
