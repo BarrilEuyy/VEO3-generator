@@ -32,6 +32,9 @@ const ApiKeyInput: React.FC<ApiKeyInputProps> = ({ apiKey, setApiKey, isDisabled
                 disabled={isDisabled}
                 aria-required="true"
             />
+            <p className="text-xs text-gray-500 text-center">
+                Your key is saved securely in your browser's local storage for your convenience.
+            </p>
         </div>
     );
 };

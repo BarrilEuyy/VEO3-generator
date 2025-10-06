@@ -10,7 +10,7 @@ import { GenerationType, AspectRatio, FileInfo } from './types';
 import { VIDEO_GENERATION_MESSAGES } from './constants';
 
 const App: React.FC = () => {
-    const [apiKey, setApiKey] = useState<string>('');
+    const [apiKey, setApiKey] = useState<string>(() => localStorage.getItem('geminiApiKey') || '');
     const [prompt, setPrompt] = useState<string>('');
     const [generationType, setGenerationType] = useState<GenerationType>(GenerationType.Image);
     const [aspectRatio, setAspectRatio] = useState<AspectRatio>('16:9');
@@ -19,6 +19,14 @@ const App: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [resultUrl, setResultUrl] = useState<string | null>(null);
     const [referenceImage, setReferenceImage] = useState<FileInfo | null>(null);
+
+    useEffect(() => {
+        if (apiKey) {
+            localStorage.setItem('geminiApiKey', apiKey);
+        } else {
+            localStorage.removeItem('geminiApiKey');
+        }
+    }, [apiKey]);
 
     useEffect(() => {
         let interval: number;
