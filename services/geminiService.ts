@@ -20,7 +20,7 @@ export const generateImage = async (
                         },
                     },
                     {
-                        text: prompt || 'Improve this image, keeping the original subject.',
+                        text: prompt.trim() || 'Improve this image, keeping the original subject.',
                     },
                 ],
             },
@@ -40,7 +40,7 @@ export const generateImage = async (
     } else {
         const response = await ai.models.generateImages({
             model: 'imagen-4.0-generate-001',
-            prompt: prompt,
+            prompt: prompt.trim(),
             config: {
                 numberOfImages: 1,
                 outputMimeType: 'image/jpeg',
@@ -65,7 +65,7 @@ export const generateVideo = async (
     const ai = new GoogleGenAI({ apiKey });
     const videoParams: any = {
         model: 'veo-3.0-generate-preview',
-        prompt: `A full HD, cinematic, high quality video of: ${prompt}`,
+        prompt: `A full HD, cinematic, high quality video of: ${prompt.trim()}`,
         config: {
             numberOfVideos: 1,
             aspectRatio: aspectRatio
