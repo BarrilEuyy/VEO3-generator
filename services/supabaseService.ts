@@ -1,3 +1,4 @@
+
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { GenerationType, HistoryItem } from '../types';
 
@@ -6,8 +7,8 @@ const BUCKET_NAME = 'veo3';
 class SupabaseService {
     private client: SupabaseClient | null = null;
 
-    initialize(url: string, anonKey: string) {
-        this.client = createClient(url, anonKey);
+    initialize(url: string, serviceKey: string) {
+        this.client = createClient(url, serviceKey);
     }
     
     isInitialized(): boolean {

@@ -1,15 +1,16 @@
+
 import React from 'react';
 
 interface SupabaseCredentialsInputProps {
     supabaseUrl: string;
     setSupabaseUrl: (url: string) => void;
-    supabaseAnonKey: string;
-    setSupabaseAnonKey: (key: string) => void;
+    supabaseServiceKey: string;
+    setSupabaseServiceKey: (key: string) => void;
     isDisabled: boolean;
 }
 
 const SupabaseCredentialsInput: React.FC<SupabaseCredentialsInputProps> = ({ 
-    supabaseUrl, setSupabaseUrl, supabaseAnonKey, setSupabaseAnonKey, isDisabled 
+    supabaseUrl, setSupabaseUrl, supabaseServiceKey, setSupabaseServiceKey, isDisabled 
 }) => {
     return (
         <div className="space-y-3">
@@ -36,14 +37,18 @@ const SupabaseCredentialsInput: React.FC<SupabaseCredentialsInputProps> = ({
                 disabled={isDisabled}
             />
             <input
-                id="supabaseAnonKey"
+                id="supabaseServiceKey"
                 type="password"
-                value={supabaseAnonKey}
-                onChange={(e) => setSupabaseAnonKey(e.target.value)}
-                placeholder="Supabase Anon (public) Key"
+                value={supabaseServiceKey}
+                onChange={(e) => setSupabaseServiceKey(e.target.value)}
+                placeholder="Supabase Service Role Key"
                 className="w-full p-3 bg-gray-700/50 rounded-lg border-2 border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300 placeholder-gray-400"
                 disabled={isDisabled}
             />
+             <div className="bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-xs mt-2">
+                <p className="font-bold mb-1">Security Warning:</p>
+                <p>Using a Service Role Key in the browser is extremely insecure and should ONLY be done for local testing. Do not deploy this to a public website.</p>
+            </div>
         </div>
     );
 };

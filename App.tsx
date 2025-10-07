@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useEffect } from 'react';
 import Header from './components/Header';
 import PromptInput from './components/PromptInput';
@@ -15,7 +16,7 @@ import { VIDEO_GENERATION_MESSAGES } from './constants';
 const App: React.FC = () => {
     const [apiKey, setApiKey] = useState<string>(() => localStorage.getItem('geminiApiKey') || '');
     const [supabaseUrl, setSupabaseUrl] = useState<string>(() => localStorage.getItem('supabaseUrl') || '');
-    const [supabaseAnonKey, setSupabaseAnonKey] = useState<string>(() => localStorage.getItem('supabaseAnonKey') || '');
+    const [supabaseServiceKey, setSupabaseServiceKey] = useState<string>(() => localStorage.getItem('supabaseServiceKey') || '');
     
     const [prompt, setPrompt] = useState<string>('');
     const [generationType, setGenerationType] = useState<GenerationType>(GenerationType.Image);
@@ -38,14 +39,14 @@ const App: React.FC = () => {
     
     useEffect(() => {
         if (supabaseUrl) localStorage.setItem('supabaseUrl', supabaseUrl); else localStorage.removeItem('supabaseUrl');
-        if (supabaseAnonKey) localStorage.setItem('supabaseAnonKey', supabaseAnonKey); else localStorage.removeItem('supabaseAnonKey');
-        if(supabaseUrl && supabaseAnonKey) {
-            supabase.initialize(supabaseUrl, supabaseAnonKey);
+        if (supabaseServiceKey) localStorage.setItem('supabaseServiceKey', supabaseServiceKey); else localStorage.removeItem('supabaseServiceKey');
+        if(supabaseUrl && supabaseServiceKey) {
+            supabase.initialize(supabaseUrl, supabaseServiceKey);
             loadHistory();
         } else {
             setHistoryItems([]);
         }
-    }, [supabaseUrl, supabaseAnonKey]);
+    }, [supabaseUrl, supabaseServiceKey]);
 
     const loadHistory = useCallback(async () => {
         if (!supabase.isInitialized()) return;
@@ -195,8 +196,8 @@ const App: React.FC = () => {
                                 <SupabaseCredentialsInput
                                     supabaseUrl={supabaseUrl}
                                     setSupabaseUrl={setSupabaseUrl}
-                                    supabaseAnonKey={supabaseAnonKey}
-                                    setSupabaseAnonKey={setSupabaseAnonKey}
+                                    supabaseServiceKey={supabaseServiceKey}
+                                    setSupabaseServiceKey={setSupabaseServiceKey}
                                     isDisabled={isLoading}
                                 />
                             </div>
@@ -207,7 +208,7 @@ const App: React.FC = () => {
                         items={historyItems.slice(0, displayedHistoryCount)}
                         isLoading={isHistoryLoading}
                         onSelectItem={handleSelectHistoryItem}
-                        hasCredentials={!!(supabaseUrl && supabaseAnonKey)}
+                        hasCredentials={!!(supabaseUrl && supabaseServiceKey)}
                         totalItemCount={historyItems.length}
                         onLoadMore={handleLoadMoreHistory}
                     />
