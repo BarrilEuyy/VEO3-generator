@@ -1,16 +1,25 @@
+
 import { GoogleGenAI, Modality } from "@google/genai";
 import { AspectRatio, FileInfo } from '../types';
+
+const getAiClient = (apiKey: string) => {
+    if (!apiKey) {
+        throw new Error("Gemini API Key must be provided.");
+    }
+    return new GoogleGenAI({ apiKey });
+}
 
 export const generateImage = async (
     prompt: string, 
     aspectRatio: AspectRatio, 
     referenceImage: FileInfo | null,
+    model: string,
     apiKey: string
 ): Promise<string> => {
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = getAiClient(apiKey);
     if (referenceImage) {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash-image',
+            model: model,
             contents: {
                 parts: [
                     {
@@ -39,7 +48,7 @@ export const generateImage = async (
 
     } else {
         const response = await ai.models.generateImages({
-            model: 'imagen-4.0-generate-001',
+            model: model,
             prompt: prompt.trim(),
             config: {
                 numberOfImages: 1,
@@ -60,11 +69,12 @@ export const generateVideo = async (
     prompt: string, 
     aspectRatio: AspectRatio,
     referenceImage: FileInfo | null,
+    model: string,
     apiKey: string
 ) => {
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = getAiClient(apiKey);
     const videoParams: any = {
-        model: 'veo-3.0-generate-preview',
+        model: model,
         prompt: `A full HD, cinematic, high quality video of: ${prompt.trim()}`,
         config: {
             numberOfVideos: 1,
@@ -84,7 +94,7 @@ export const generateVideo = async (
 };
 
 export const checkVideoStatus = async (operation: any, apiKey: string) => {
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = getAiClient(apiKey);
     const updatedOperation = await ai.operations.getVideosOperation({ operation: operation });
     return updatedOperation;
 };

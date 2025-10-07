@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect } from 'react';
 import { HistoryItem, GenerationType } from '../types';
 
@@ -77,8 +78,8 @@ const HistoryPanel: React.FC<HistoryPanelProps> = ({ isVisible, items, isLoading
         if (!hasCredentials) {
             return (
                  <div className="text-center text-gray-400 p-4">
-                    <h4 className="font-semibold text-white mb-2">Enable History</h4>
-                    <p className="text-sm">Please provide your Supabase Project URL and Anon Key in the main panel to save and view your generation history.</p>
+                    <h4 className="font-semibold text-white mb-2">History Disabled</h4>
+                    <p className="text-sm">The history feature is not available. Supabase credentials are not configured in the application environment.</p>
                 </div>
             )
         }

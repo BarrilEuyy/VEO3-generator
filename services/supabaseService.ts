@@ -1,4 +1,5 @@
 
+
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { GenerationType, HistoryItem } from '../types';
 
@@ -7,8 +8,13 @@ const BUCKET_NAME = 'veo3';
 class SupabaseService {
     private client: SupabaseClient | null = null;
 
-    initialize(url: string, serviceKey: string) {
-        this.client = createClient(url, serviceKey);
+    initialize(supabaseUrl: string | null, supabaseServiceKey: string | null) {
+        if (supabaseUrl && supabaseServiceKey) {
+            this.client = createClient(supabaseUrl, supabaseServiceKey);
+        } else {
+            this.client = null;
+            console.warn("Supabase credentials not provided or incomplete. History feature will be disabled.");
+        }
     }
     
     isInitialized(): boolean {
@@ -17,7 +23,7 @@ class SupabaseService {
 
     private getClient(): SupabaseClient {
         if (!this.client) {
-            throw new Error('Supabase client is not initialized. Call initialize() first.');
+            throw new Error('Supabase client is not initialized. Call initialize() with valid credentials first.');
         }
         return this.client;
     }

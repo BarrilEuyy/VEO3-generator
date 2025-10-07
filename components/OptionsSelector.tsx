@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { GenerationType, AspectRatio } from '../types';
 import { ASPECT_RATIOS } from '../constants';
@@ -9,6 +10,9 @@ interface OptionsSelectorProps {
     setAspectRatio: (ratio: AspectRatio) => void;
     isDisabled: boolean;
     isAspectRatioDisabled: boolean;
+    availableModels: string[];
+    selectedModel: string;
+    setSelectedModel: (model: string) => void;
 }
 
 const OptionsSelector: React.FC<OptionsSelectorProps> = ({
@@ -18,6 +22,9 @@ const OptionsSelector: React.FC<OptionsSelectorProps> = ({
     setAspectRatio,
     isDisabled,
     isAspectRatioDisabled,
+    availableModels,
+    selectedModel,
+    setSelectedModel
 }) => {
     return (
         <div className="space-y-6">
@@ -64,6 +71,26 @@ const OptionsSelector: React.FC<OptionsSelectorProps> = ({
                     ))}
                  </div>
             </div>
+
+            {generationType === GenerationType.Video && (
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 border-t border-gray-700/50">
+                    <label htmlFor="model-selector" className="font-semibold text-lg text-gray-300">AI Model:</label>
+                    <select
+                        id="model-selector"
+                        value={selectedModel}
+                        onChange={(e) => setSelectedModel(e.target.value)}
+                        disabled={isDisabled || availableModels.length <= 1}
+                        className="px-4 py-2 bg-gray-700/60 rounded-lg text-indigo-300 font-mono text-sm border-2 border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {availableModels.map((model) => (
+                            <option key={model} value={model}>
+                                {model}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            )}
+
         </div>
     );
 };
