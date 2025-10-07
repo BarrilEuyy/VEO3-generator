@@ -1,5 +1,4 @@
-
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { HistoryItem, GenerationType } from '../types';
 
 interface HistoryPanelProps {
@@ -18,18 +17,6 @@ const HistoryPanel: React.FC<HistoryPanelProps> = ({ isVisible, items, isLoading
     }
 
     const HistoryItemCard: React.FC<{ item: HistoryItem }> = ({ item }) => {
-        const videoRef = useRef<HTMLVideoElement>(null);
-
-        useEffect(() => {
-            // This effect forces the browser to play the video, fixing the "audio only" bug.
-            if (videoRef.current) {
-                videoRef.current.muted = true; // Ensure it's muted for autoplay policies
-                videoRef.current.play().catch(error => {
-                    console.warn("History preview autoplay was prevented:", error);
-                });
-            }
-        }, [item.url]);
-
         return (
             <button 
                 onClick={() => onSelectItem(item)}
@@ -38,12 +25,12 @@ const HistoryPanel: React.FC<HistoryPanelProps> = ({ isVisible, items, isLoading
                 <div className="relative aspect-video bg-gray-900">
                     {item.type === GenerationType.Video ? (
                         <video 
-                            ref={videoRef}
                             src={item.url} 
                             className="w-full h-full object-cover" 
                             muted 
                             playsInline 
                             loop 
+                            autoPlay
                         />
                     ) : (
                         <img src={item.url} alt={item.name} className="w-full h-full object-cover" />

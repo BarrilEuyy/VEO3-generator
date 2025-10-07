@@ -29,7 +29,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({ isLoading, resultUrl, gen
                 generationType === GenerationType.Image ? (
                     <img src={resultUrl} alt="Generated content" className="max-w-full max-h-full object-contain rounded-lg" />
                 ) : (
-                    <video key={resultUrl} src={resultUrl} controls autoPlay loop className="max-w-full max-h-full object-contain rounded-lg">
+                    <video key={resultUrl} src={resultUrl} controls autoPlay loop muted playsInline className="max-w-full max-h-full object-contain rounded-lg">
                         Your browser does not support the video tag.
                     </video>
                 )
