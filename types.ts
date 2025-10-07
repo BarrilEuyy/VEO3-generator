@@ -10,3 +10,11 @@ export interface FileInfo {
     mimeType: string;
     name: string;
 }
+
+export interface HistoryItem {
+    id: string;
+    name: string;
+    url: string;
+    type: GenerationType;
+    createdAt: string;
+}
